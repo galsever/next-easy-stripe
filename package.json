@@ -1,0 +1,29 @@
+{
+  "name": "next-easy-stripe",
+  "version": "1.0.0",
+  "module": "dist/index.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@stripe/stripe-js": "^4.10.0",
+    "@types/next": "^9.0.0",
+    "next": "^15.0.3",
+    "next-utils-sever": "^1.0.0",
+    "stripe": "^17.3.1"
+  }
+}
