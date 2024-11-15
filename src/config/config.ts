@@ -59,7 +59,7 @@ export class StripeConfig {
         }
     }
 
-    handleStripeReq(request: NextRequest, config: StripeConfig): Promise<NextResponse> {
-        return handleWebhook(request, config)
+    handleStripeReq(request: NextRequest): Promise<NextResponse> {
+        return handleWebhook(request, this)
     }
 }
