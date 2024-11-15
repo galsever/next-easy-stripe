@@ -29,11 +29,9 @@ export class StripeConfig {
         this.subscriptionDeleted = subscriptionDeleted;
         this.secretKey = secretKey;
     }
-    async handleSession(formData: FormData): Promise<string | undefined> {
-        const productId = formData.get("formData")
-        const formQuantity = formData.get("quantity")
-        if (!productId || typeof productId !== "string") return
-        if (!formQuantity || typeof formQuantity !== "string") return
+    async handleSession(productId: string, formQuantity: string): Promise<string | undefined> {
+        if (!productId) return
+        if (!formQuantity) return
 
         const quantity = safeParse(formQuantity)
         if (!quantity) return
