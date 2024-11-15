@@ -1,23 +1,25 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "moduleResolution": "bundler",
-    "verbatimModuleSyntax": true,
-    "noEmit": false,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "declaration": true,
-    "declarationDir": "./dist",
-    "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    "lib": ["ESNext", "DOM"], // Supports modern JS and browser APIs
+    "target": "ESNext", // Output modern ESNext code
+    "module": "ESNext", // Use ESNext for module syntax
+    "moduleDetection": "force", // Ensures explicit modules
+    "jsx": "react-jsx", // Enables JSX for React 17+
+    "allowJs": true, // Allow using .js files
+    "moduleResolution": "node", // Node-style module resolution
+    "verbatimModuleSyntax": true, // Preserve ES module import/export syntax
+    "noEmit": false, // Allow emitting output files
+    "outDir": "./dist", // Emit compiled files to the dist folder
+    "rootDir": "./src", // Root directory of input files
+    "declaration": true, // Emit .d.ts type declarations
+    "declarationDir": "./dist", // Emit .d.ts to the dist folder
+    "strict": true, // Enable all strict type checks
+    "skipLibCheck": true, // Skip type checks of declaration files
+    "noFallthroughCasesInSwitch": true, // Prevent unintentional fallthrough in switch statements
+    "noUnusedLocals": false, // Allow unused local variables (if intentional)
+    "noUnusedParameters": false, // Allow unused parameters (if intentional)
+    "noPropertyAccessFromIndexSignature": false // Allow index signature property access without restriction
   },
+  "include": ["src"], // Include only the source directory
+  "exclude": ["node_modules", "dist"] // Exclude unnecessary folders
 }
