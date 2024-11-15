@@ -44,7 +44,7 @@ export class StripeConfig {
         try {
             const session = await this.stripe.checkout.sessions.create({
                 payment_method_types: ["card"],
-                line_items: [{ price: product.priceId, quantity: product.mode === "subscription" ? 0 : quantity }],
+                line_items: [{ price: product.priceId, quantity: product.mode === "subscription" ? 1 : quantity }],
                 mode: product.mode,
                 success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
                 cancel_url: `${process.env.FRONTEND_URL}/cancel`,
