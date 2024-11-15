@@ -1,18 +1,17 @@
 import {NextResponse, type NextRequest } from "next/server";
 import {EventType, getEventType} from "../definitions/definitions";
-import type {StripeConfig} from "./config.ts";
 import Stripe from "stripe";
+import type {StripeConfig} from "./config";
 
 export async function handleWebhook(request: NextRequest, config: StripeConfig): Promise<NextResponse> {
     const reqText = await request.text()
     const sig = request.headers.get("Stripe-Signature");
-    const stripe = new Stripe(config.secretKey)
 
     try {
-        const event = await stripe.webhooks.constructEventAsync(
+        const event = await config.stripe.webhooks.constructEventAsync(
             reqText,
             sig!,
-            config.secretKey
+            config.webhookSecret
         );
 
         const eventType = getEventType(event.type)
