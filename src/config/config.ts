@@ -6,11 +6,13 @@ import {safeParse} from "next-utils-sever";
 
 export class StripeConfig {
     public products: Map<string, Product>;
-    public paymentSucceeded: (data: Stripe.PaymentIntent) => void;
-    public subscriptionCreated: (data: Stripe.Subscription) => void;
-    public subscriptionUpdated: (data: Stripe.Subscription) => void;
-    public subscriptionDeleted: (data: Stripe.Subscription) => void;
-    public secretKey: string
+    public paymentSucceeded: (data: Stripe.PaymentIntent) => Promise<void>;
+    public subscriptionCreated: (data: Stripe.Subscription) => Promise<void>;
+    public subscriptionUpdated: (data: Stripe.Subscription) => Promise<void>;
+    public subscriptionDeleted: (data: Stripe.Subscription) => Promise<void>;
+    public secretKey: string;
+    public stripe: Stripe;
+    public webhookSecret: string;
 
     constructor(
         products: Product[] = [],
