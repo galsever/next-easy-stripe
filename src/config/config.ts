@@ -1,6 +1,6 @@
 import type {Product} from "../definitions/definitions.ts";
 import Stripe from "stripe";
-import type {NextRequest, NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {handleWebhook} from "./webhook";
 import {safeParse} from "next-utils-sever";
 
@@ -16,11 +16,12 @@ export class StripeConfig {
 
     constructor(
         products: Product[] = [],
-        paymentSucceeded: (data: Stripe.PaymentIntent) => void = () => {},
-        subscriptionCreated: (data: Stripe.Subscription) => void = () => {},
-        subscriptionUpdated: (data: Stripe.Subscription) => void = () => {},
-        subscriptionDeleted: (data: Stripe.Subscription) => void = () => {},
-        secretKey: string
+        paymentSucceeded: (data: Stripe.PaymentIntent) => Promise<void> = async () => {},
+        subscriptionCreated: (data: Stripe.Subscription) => Promise<void> = async () => {},
+        subscriptionUpdated: (data: Stripe.Subscription) => Promise<void> = async () => {},
+        subscriptionDeleted: (data: Stripe.Subscription) => Promise<void> = async () => {},
+        secretKey: string,
+        webhookSecret: string
     ) {
         this.products = new Map(products.map(product => [product.name, product]));
         this.paymentSucceeded = paymentSucceeded;
@@ -28,6 +29,8 @@ export class StripeConfig {
         this.subscriptionUpdated = subscriptionUpdated;
         this.subscriptionDeleted = subscriptionDeleted;
         this.secretKey = secretKey;
+        this.stripe = new Stripe(secretKey);
+        this.webhookSecret = webhookSecret
     }
     async handleSession(productId: string, formQuantity: string): Promise<string | undefined> {
         if (!productId) return
@@ -39,10 +42,8 @@ export class StripeConfig {
         const product = this.products.get(productId)
         if (!product) return
 
-        const stripe = new Stripe(this.secretKey)
-
         try {
-            const session = await stripe.checkout.sessions.create({
+            const session = await this.stripe.checkout.sessions.create({
                 payment_method_types: ["card"],
                 line_items: [{ price: product.priceId, quantity: product.mode === "subscription" ? 1 : quantity }],
                 mode: product.mode,
@@ -59,7 +60,7 @@ export class StripeConfig {
         }
     }
 
-    handleStripeReq(request: NextRequest): Promise<NextResponse> {
-        return handleWebhook(request, this)
+    handleStripeReq(req: NextRequest): Promise<NextResponse> {
+        return handleWebhook(req, this)
     }
 }
