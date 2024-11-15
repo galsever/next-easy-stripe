@@ -10,7 +10,6 @@ export class StripeConfig {
     public subscriptionCreated: (data: Stripe.Subscription) => void;
     public subscriptionUpdated: (data: Stripe.Subscription) => void;
     public subscriptionDeleted: (data: Stripe.Subscription) => void;
-    public stripe: Stripe
     public secretKey: string
 
     constructor(
@@ -26,7 +25,6 @@ export class StripeConfig {
         this.subscriptionCreated = subscriptionCreated;
         this.subscriptionUpdated = subscriptionUpdated;
         this.subscriptionDeleted = subscriptionDeleted;
-        this.stripe = new Stripe(secretKey);
         this.secretKey = secretKey;
     }
     async handleSession(formData: FormData): Promise<string | undefined> {
@@ -41,8 +39,10 @@ export class StripeConfig {
         const product = this.products.get(productId)
         if (!product) return
 
+        const stripe = new Stripe(this.secretKey)
+
         try {
-            const session = await this.stripe.checkout.sessions.create({
+            const session = await stripe.checkout.sessions.create({
                 payment_method_types: ["card"],
                 line_items: [{ price: product.priceId, quantity: product.mode === "subscription" ? 1 : quantity }],
                 mode: product.mode,

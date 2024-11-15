@@ -6,9 +6,10 @@ import Stripe from "stripe";
 export async function handleWebhook(request: NextRequest, config: StripeConfig): Promise<NextResponse> {
     const reqText = await request.text()
     const sig = request.headers.get("Stripe-Signature");
+    const stripe = new Stripe(config.secretKey)
 
     try {
-        const event = await config.stripe.webhooks.constructEventAsync(
+        const event = await stripe.webhooks.constructEventAsync(
             reqText,
             sig!,
             config.secretKey
