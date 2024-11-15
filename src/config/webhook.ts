@@ -24,16 +24,16 @@ export async function handleWebhook(request: NextRequest, config: StripeConfig):
         }
 
         if (eventType === EventType.PaymentSucceeded) {
-            config.paymentSucceeded(event.data.object as Stripe.PaymentIntent)
+            await config.paymentSucceeded(event.data.object as Stripe.PaymentIntent)
         }
         if (eventType === EventType.SubscriptionCreated) {
-            config.subscriptionCreated(event.data.object as Stripe.Subscription)
+            await config.subscriptionCreated(event.data.object as Stripe.Subscription)
         }
         if (eventType === EventType.SubscriptionUpdated) {
-            config.subscriptionUpdated(event.data.object as Stripe.Subscription)
+            await config.subscriptionUpdated(event.data.object as Stripe.Subscription)
         }
         if (eventType === EventType.SubscriptionDeleted) {
-            config.subscriptionDeleted(event.data.object as Stripe.Subscription)
+            await config.subscriptionDeleted(event.data.object as Stripe.Subscription)
         }
 
         return NextResponse.json({
