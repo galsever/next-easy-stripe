@@ -1,2 +1,2 @@
-export { StripeConfig } from "./config/config.ts"
+export { StripeConfig } from "./config/config"
 export { useStripe } from "./hooks/useStripe"
